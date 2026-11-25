@@ -12,3 +12,8 @@ launcher/local.properties
 Thumbs.db
 # your own brand logos stay on your machine
 launcher/app/src/main/res/drawable-nodpi/logo_*.png
+
+# personal copies (location, TV details, screenshots) stay on this machine
+*.local.md
+*.local.json
+screenshots.local/

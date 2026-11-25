@@ -7,6 +7,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Watch Next artwork for the live background (granted over adb; the launcher works without it). -->
+    <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Keeps the screen on while Settings is open, so the screensaver does not cover it (HomeKeyService). -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Granted over adb only (pm grant): lets BootRepair switch the Home helper and wireless debugging back on. -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <!-- Android 11+ package visibility: lets the launcher list the TV apps it shows as tiles. -->
     <queries>
@@ -36,8 +43,10 @@
         android:allowBackup="false"
         android:localeConfig="@xml/locales_config">
 
+        <!-- Sapphire Arctic fork: the full-screen cover flow is Home. The original grid home stays in the code
+             (MainActivity below) but is no longer a Home or launcher entry. -->
         <activity
-            android:name=".MainActivity"
+            android:name=".CoverFlowActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
@@ -64,6 +73,45 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|uiMode"
+            android:screenOrientation="landscape" />
+
+        <!-- The almanac screensaver as a screen (Back on Home). -->
+        <activity
+            android:name=".AlmanacActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+        <!-- The almanac screensaver: `settings put secure screensaver_components com.esamyo.luxurytv/.AlmanacDream`. -->
+        <service
+            android:name=".AlmanacDream"
+            android:label="Almanac (Luxury TV)"
+            android:exported="true"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <!-- Sees media sessions (what a video or music app last played) for the live background. Enable with
+             `cmd notification allow_listener com.esamyo.luxurytv/com.esamyo.luxurytv.LiveArtListener`. -->
+        <service
+            android:name=".LiveArtListener"
+            android:label="Luxury TV live background"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
         <!-- Home button for remotes that send KEYCODE_ALL_APPS (Xiaomi). Opt-in: see HomeKeyService. -->
         <service
             android:name=".HomeKeyService"
@@ -78,6 +126,29 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/home_key_service" />
         </service>
+
+        <!-- TCL: an empty TV input, so TCL's boot manager lets this app start at boot (TclBootInput). -->
+        <service
+            android:name=".TclBootInput"
+            android:exported="true"
+            android:label="@string/home_key_name"
+            android:permission="android.permission.BIND_TV_INPUT">
+            <intent-filter>
+                <action android:name="android.media.tv.TvInputService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.media.tv.input"
+                android:resource="@xml/tcl_boot_input" />
+        </service>
+
+        <!-- At boot (once TCL lets the app start): repair the Home helper and remote access. -->
+        <receiver
+            android:name=".BootRepair"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!-- The same clock, opened by Back on Home (back_opens_clock). -->
         <activity

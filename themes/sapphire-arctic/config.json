@@ -1,0 +1,30 @@
+{
+  "wallpaper": false,
+  "background_color": "#07122A",
+  "locale": "",
+  "latitude": "40.01",
+  "longitude": "-105.27",
+  "clock_format": "12",
+  "temperature_unit": "F",
+  "accent_color": "#8FD3FF",
+  "ring_color": "#BDE6FF",
+  "dock_apps": [
+    "com.amazon.amazonvideo.livingroom",
+    "com.google.android.youtube.tv",
+    "com.spotify.tv.android"
+  ],
+  "hidden_apps": [],
+  "default_focus": "com.google.android.youtube.tv",
+  "live_background": true,
+  "live_background_delay_ms": 1500,
+  "screensaver_feeds": [
+    "spotlight",
+    "bing",
+    "wikimedia",
+    "gnome",
+    "kde"
+  ],
+  "screensaver_photo_minutes": 1,
+  "screensaver_source_minutes": 30,
+  "youtube_button_app": ""
+}

@@ -7,6 +7,18 @@
   Black, frameless logos, a soft white glow. No ads, no recommendations, no tracking.
 </p>
 
+## Sapphire Arctic fork
+
+This fork adds a cover-flow home screen with a live background, and an almanac screensaver with photo feeds and a full
+weather panel (theme: `themes/sapphire-arctic`, remote install: `REMOTE-INSTALL.md`). Screenshots use a sample city
+(Boulder, CO 80302):
+
+<p align="center">
+  <img src="docs/screenshots/home-coverflow.png" width="720" alt="Cover-flow home screen"><br>
+  <img src="docs/screenshots/screensaver-info.png" width="720" alt="Almanac screensaver with weather"><br>
+  <img src="docs/screenshots/screensaver-photo.png" width="720" alt="Almanac screensaver photo view">
+</p>
+
 <p align="center">
   <a href="https://github.com/esamyo/luxury-tv/releases/latest"><img src="https://img.shields.io/github/v/release/esamyo/luxury-tv?label=release&color=black" alt="Latest release"></a>
   <a href="https://github.com/esamyo/luxury-tv/releases"><img src="https://img.shields.io/github/downloads/esamyo/luxury-tv/total?color=black" alt="Downloads"></a>
